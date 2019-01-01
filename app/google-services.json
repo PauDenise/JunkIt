@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "552079004762",
+    "firebase_url": "https://junkitapp.firebaseio.com",
+    "project_id": "junkitapp",
+    "storage_bucket": "junkitapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:552079004762:android:9952c66cea04994e",
+        "android_client_info": {
+          "package_name": "com.gui.pc1.junkit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "552079004762-494452mbo8q5dgkk1tdqgpp0hsjqpmd5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtsx76A80-Yz7WkzNxNAJ-7_Ttpio3J6M"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
