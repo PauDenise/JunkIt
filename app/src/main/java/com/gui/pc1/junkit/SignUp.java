@@ -16,7 +16,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class SignUp extends AppCompatActivity implements View.OnClickListener {
-/*Hello!*/
+/*Hello! There*/
     private Button buttonRegister;
     private EditText editTextEmail;
     private EditText editTextPassword;
