@@ -8,8 +8,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import android.support.v4.app.Fragment;
-
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.PermissionChecker;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +25,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 
 
 public class MapsFragment extends Fragment implements OnMapReadyCallback{
-    
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         Toast.makeText(getContext(), "Map is Ready.", Toast.LENGTH_SHORT).show();
@@ -42,6 +42,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback{
 
     public Boolean mLocationPermissionsGranted = false;
     public GoogleMap mMap;
+
 
     @Nullable
     @Override
@@ -71,30 +72,36 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback{
     private void initMap(){
         Log.d(TAG, "initMap: Initializing Map");
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(MapsFragment.this);
+        mapFragment.getMapAsync(this);
     }
 
     private void getLocationPermission() {
         Log.d(TAG, "getLocationPermission: Getting location permissions.");
         String[] permissions = {FINE_LOCATION, COARSE_LOCATION};
+        Log.d(TAG, "getLocationPermission: getcontext value is: "+this.getContext());
 
-        if (ContextCompat.checkSelfPermission(getActivity(),
+        if (PermissionChecker.checkSelfPermission(getContext(),
                 FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                if (ContextCompat.checkSelfPermission(getActivity(),
+                if (ContextCompat.checkSelfPermission(getContext(),
                    COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+                    Log.d(TAG, "getLocationPermission: "+ContextCompat.checkSelfPermission(getContext(),
+                            COARSE_LOCATION));
+                    Log.d(TAG, "getLocationPermission: eto yung dapat:"+PackageManager.PERMISSION_GRANTED );
                     mLocationPermissionsGranted = true;
+                    //initMap();
                 }else{
                     requestPermissions(permissions,LOCATION_PERMISSION_REQUEST_CODE);
                 }
         }else {
             requestPermissions(permissions, LOCATION_PERMISSION_REQUEST_CODE);
         }
+        requestPermissions(permissions, LOCATION_PERMISSION_REQUEST_CODE);
     }
+
 
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         Log.d(TAG, "onRequestPermissionsResult: Called.");
         mLocationPermissionsGranted = false;
-
         switch (requestCode){
             case LOCATION_PERMISSION_REQUEST_CODE:{
                 if(grantResults.length>0){
