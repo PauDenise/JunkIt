@@ -10,44 +10,61 @@ import android.support.annotation.Nullable;
 
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 
-public class MapsFragment extends Fragment implements OnMapReadyCallback{
 
+public class MapsFragment extends Fragment implements
+        OnMapReadyCallback,
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
+        LocationListener {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         Toast.makeText(getContext(), "Map is Ready.", Toast.LENGTH_SHORT).show();
         Log.d(TAG, "onMapReady: Map is ready.");
         mMap = googleMap;
         if (mLocationPermissionsGranted) {
-            getDeviceLocation();
             if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(),
-                    Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                return;
+                    == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(),
+                    Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                buildGoogleApiClient();
+                mMap.setMyLocationEnabled(true);
+                mMap.getUiSettings().setMyLocationButtonEnabled(false);
             }
-            mMap.setMyLocationEnabled(true);
-            mMap.getUiSettings().setMyLocationButtonEnabled(false);
+
 
         }
+    }
+
+    protected synchronized void buildGoogleApiClient() {
+        googleApiClient = new GoogleApiClient.Builder(this.getActivity())
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+
+        googleApiClient.connect();
     }
 
     private static final String TAG = "MapsFragment";
@@ -57,13 +74,16 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback{
     //widgets
     //private EditText mSearchText;
 
-    public static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
-    public static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
-    public static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
+    private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
+    private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
 
-    public Boolean mLocationPermissionsGranted = false;
-    public GoogleMap mMap;
-    public FusedLocationProviderClient mFusedLocationProviderClient;
+    private Boolean mLocationPermissionsGranted = false;
+    private GoogleMap mMap;
+    private GoogleApiClient googleApiClient;
+    private LocationRequest locationRequest;
+    private Location lastLocation;
+    private Marker currentUserLocationMarker;
 
 
 
@@ -75,41 +95,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback{
             //mSearchText = getView().findViewById(R.id.input_search);
             getLocationPermission(); }
         return inflater.inflate(R.layout.fragment_maps, container, false);
-    }
-
-    private void getDeviceLocation(){
-        Log.d(TAG, "getDeviceLocation: Getting the device's current  location. ");
-        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
-
-        try{
-            if(mLocationPermissionsGranted){
-                Task location = mFusedLocationProviderClient.getLastLocation();
-                location.addOnCompleteListener(new OnCompleteListener() {
-                    @Override
-                    public void onComplete(@NonNull Task task) {
-                            if(task.getResult()!=null) {
-                                Log.d(TAG, "onComplete: Found location!");
-                                Location currentLocation = (Location) task.getResult();
-                                LatLng coordinates = new LatLng(currentLocation.getLatitude(),
-                                        currentLocation.getLongitude());
-                                moveCamera(coordinates, DEFAULT_ZOOM);
-                                //mMap.addMarker(new MarkerOptions().position(coordinates).title("HOME"));
-                            }else{
-                                Log.d(TAG, "onComplete: Current location is Null.");
-                                Toast.makeText(getContext(), "Unable to get current location.", Toast.LENGTH_SHORT).show();
-                            }
-                    }
-                });
-            }
-
-        }catch(SecurityException e){
-            Log.d(TAG, "getDeviceLocation: SecurityException: "+e.getMessage());
-        }
-    }
-
-    private void moveCamera(LatLng latLng, float zoom){
-        Log.d(TAG, "moveCamera: Moving camera to: Lat:"+latLng.latitude+", Lng:"+latLng.longitude);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
     }
 
     public Boolean isServicesOK() {
@@ -167,5 +152,48 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback{
         }
     }
 
+    @Override
+    public void onLocationChanged(Location location) {
+        lastLocation = location;
+        if(currentUserLocationMarker!=null){
+            currentUserLocationMarker.remove();
+        }
+
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(latLng).title("Your Location").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
+
+        currentUserLocationMarker = mMap.addMarker(markerOptions);
+        Log.d(TAG, "moveCamera: Moving camera to: Lat:"+latLng.latitude+", Lng:"+latLng.longitude);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM));
+
+        if(googleApiClient!=null){
+            LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient,this);
+        }
+    }
+
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+            locationRequest = new LocationRequest();
+            locationRequest.setInterval(1100);
+            locationRequest.setFastestInterval(1100);
+            locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+            if(ContextCompat.checkSelfPermission(this.getActivity(), FINE_LOCATION)==PackageManager.PERMISSION_GRANTED){
+                LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
+            }
+
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
 }
 
