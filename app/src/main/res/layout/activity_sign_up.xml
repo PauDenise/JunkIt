@@ -1,73 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background = "@drawable/background"
+    android:alpha="0.9"
     tools:context=".SignUp">
 
     <TextView
         android:id="@+id/SignUpDisp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="130dp"
+        android:layout_height="45dp"
         android:lineSpacingExtra="24sp"
         android:text="Sign Up"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="24sp"
+        android:layout_marginTop="60dp"
+        android:layout_marginLeft="120dp"
+        android:fontFamily="@font/stentiga"
+        android:textAlignment="center"
+        android:textColor="#000"
+        android:textSize="23sp"
         android:textStyle="bold"
         android:typeface="sans"
+        android:padding="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.239" />
+        app:layout_constraintVertical_bias="0.097"
+        android:background="@drawable/plate"
+        />
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <android.support.v7.widget.CardView
+        android:layout_width="329dp"
+        android:layout_height="300dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.605">
+        android:layout_gravity="center"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="60dp"
+        tools:layout_editor_absoluteX="28dp"
+        tools:layout_editor_absoluteY="120dp"
+        app:cardCornerRadius="15dp"
+        app:cardBackgroundColor="#e1e7ef">
+
+
 
         <EditText
             android:id="@+id/EditTextEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="12dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:textSize="23sp"
             android:hint="Email"
+            android:fontFamily="@font/alegreya"
+            android:textColorHint="#000"
+            android:textColor="#000"
             android:inputType="textEmailAddress" />
 
         <EditText
             android:id="@+id/EditTextPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="12dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="160dp"
+            android:textSize="23sp"
+            android:textColorHint="#000"
+            android:textColor="#000"
             android:hint="Password"
+            android:fontFamily="@font/alegreya"
             android:inputType="textPassword" />
 
-        <Button
-            android:id="@+id/buttonRegister"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            android:text="Register" />
 
-        <TextView
-            android:id="@+id/textViewLogin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Already Registered? Log in here"
-            android:textAlignment="center" />
+    </android.support.v7.widget.CardView>
 
-    </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonRegister"
+        android:layout_width="130dp"
+        android:layout_height="45dp"
+        android:background="@drawable/plate"
+        android:gravity="center"
+        android:textColor="#000"
+        android:textSize="18sp"
+        android:text="Register"
+        android:layout_marginTop="480dp"
+        android:layout_marginLeft="120dp"
+        android:fontFamily="@font/stentiga"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="127dp"
+        tools:layout_editor_absoluteY="437dp" />
+
+    <TextView
+        android:id="@+id/textViewLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Already Registered? Log in here."
+        android:layout_marginTop="530dp"
+        android:fontFamily="@font/ruda"
+        android:textSize="17sp"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="501dp" />
 
     <ProgressBar
         android:id="@+id/progressbar"
@@ -81,4 +120,4 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.31" />
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>
