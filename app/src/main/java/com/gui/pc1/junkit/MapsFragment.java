@@ -2,7 +2,10 @@ package com.gui.pc1.junkit;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,9 +15,17 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -23,15 +34,21 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 
 public class MapsFragment extends Fragment implements
@@ -51,6 +68,7 @@ public class MapsFragment extends Fragment implements
                 buildGoogleApiClient();
                 mMap.setMyLocationEnabled(true);
                 mMap.getUiSettings().setMyLocationButtonEnabled(false);
+                init();
             }
 
 
@@ -58,21 +76,25 @@ public class MapsFragment extends Fragment implements
     }
 
     protected synchronized void buildGoogleApiClient() {
-        googleApiClient = new GoogleApiClient.Builder(this.getActivity())
+        googleApiClient = new GoogleApiClient.Builder(getActivity())
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
+                .addApi(Places.GEO_DATA_API)
+                .addApi(Places.PLACE_DETECTION_API)
+                .enableAutoManage(getActivity(), this)
                 .build();
-
         googleApiClient.connect();
     }
 
     private static final String TAG = "MapsFragment";
     private static final int ERROR_DIALOG_REQUEST = 9001;
     private static final float DEFAULT_ZOOM = 15f;
+    private static final LatLngBounds LAT_LNG_BOUNDS = new LatLngBounds(new LatLng(-40,-168),new LatLng(71,136));
 
     //widgets
-    //private EditText mSearchText;
+    public AutoCompleteTextView mSearchText;
+    private ImageView mGps;
 
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
@@ -81,9 +103,10 @@ public class MapsFragment extends Fragment implements
     private Boolean mLocationPermissionsGranted = false;
     private GoogleMap mMap;
     private GoogleApiClient googleApiClient;
-    private LocationRequest locationRequest;
-    private Location lastLocation;
+    public LocationRequest locationRequest;
+    public  Location lastLocation;
     private Marker currentUserLocationMarker;
+    private PlaceAutocompleteAdapter mPlaceAutocompleteAdapter;
 
 
 
@@ -91,10 +114,75 @@ public class MapsFragment extends Fragment implements
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View v  =  inflater.inflate(R.layout.fragment_maps, container, false);
         if(isServicesOK()){
-            //mSearchText = getView().findViewById(R.id.input_search);
-            getLocationPermission(); }
-        return inflater.inflate(R.layout.fragment_maps, container, false);
+            mSearchText = v.findViewById(R.id.input_search);
+            mGps = v.findViewById(R.id.ic_gps);
+            getLocationPermission();
+
+        }
+        return v;
+    }
+
+    private void init(){
+        Log.d(TAG, "init: Initializing...");
+
+        mPlaceAutocompleteAdapter = new PlaceAutocompleteAdapter (getActivity(), googleApiClient,
+                LAT_LNG_BOUNDS, null);
+        mSearchText.setAdapter(mPlaceAutocompleteAdapter);
+
+        mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+
+                if(actionId ==EditorInfo.IME_ACTION_SEARCH || actionId ==EditorInfo.IME_ACTION_DONE
+                        || keyEvent.getAction()==keyEvent.ACTION_DOWN || keyEvent.getAction()==keyEvent.KEYCODE_ENTER)
+                {
+                    //execute our method from searching.
+                    geoLocate();
+                }
+                return false;
+            }
+        });
+        mGps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: mGps clicked");
+                if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(),
+                    Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    onLocationChanged(lastLocation);
+            }
+            }
+        });
+
+    }
+
+    private void geoLocate(){
+        Log.d(TAG, "geoLocate: Geolocating...");
+        String searchString = mSearchText.getText().toString();
+        Geocoder geocoder = new Geocoder(this.getActivity());
+        List <Address> list= new ArrayList<>();
+            try{list=geocoder.getFromLocationName(searchString,1);}
+            catch (IOException e){ Log.d(TAG, "geoLocate: IOException: "+e.getMessage());}
+         if(list.size()>0){
+                Address address = list.get(0);
+             Log.d(TAG, "geoLocate: Found a location: "+address.toString());
+             moveCamera(new LatLng(address.getLatitude(),address.getLongitude()),DEFAULT_ZOOM,address.getAddressLine(0));
+         }
+        hideSoftKeyboard();
+    }
+
+    private void moveCamera(LatLng latLng, float zoom, String title){
+        Log.d(TAG, "moveCamera: Moving camera to: Lat:"+latLng.latitude+", Lng:"+latLng.longitude);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
+        if(title!="Your Location"){
+            MarkerOptions options = new MarkerOptions()
+                    .position(latLng)
+                    .title(title)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
+            mMap.addMarker(options);
+        }
     }
 
     public Boolean isServicesOK() {
@@ -152,20 +240,19 @@ public class MapsFragment extends Fragment implements
         }
     }
 
+
+
     @Override
     public void onLocationChanged(Location location) {
+        Log.d(TAG, "onLocationChanged: FORE STARTERS");
         lastLocation = location;
         if(currentUserLocationMarker!=null){
             currentUserLocationMarker.remove();
         }
 
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(latLng).title("Your Location").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
+        moveCamera(latLng,DEFAULT_ZOOM,"Your Location");
 
-        currentUserLocationMarker = mMap.addMarker(markerOptions);
-        Log.d(TAG, "moveCamera: Moving camera to: Lat:"+latLng.latitude+", Lng:"+latLng.longitude);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM));
 
         if(googleApiClient!=null){
             LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient,this);
@@ -179,7 +266,7 @@ public class MapsFragment extends Fragment implements
             locationRequest.setInterval(1100);
             locationRequest.setFastestInterval(1100);
             locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-            if(ContextCompat.checkSelfPermission(this.getActivity(), FINE_LOCATION)==PackageManager.PERMISSION_GRANTED){
+            if(ContextCompat.checkSelfPermission(getActivity(), FINE_LOCATION)==PackageManager.PERMISSION_GRANTED){
                 LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
             }
 
@@ -194,6 +281,12 @@ public class MapsFragment extends Fragment implements
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+
+    //Hide Keyboard
+    private void hideSoftKeyboard(){
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(mSearchText.getWindowToken(), 0);
     }
 }
 
