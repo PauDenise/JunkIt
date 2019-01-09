@@ -19,11 +19,10 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,9 +30,14 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.places.AutocompletePrediction;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlaceBuffer;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -44,11 +48,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.gui.pc1.junkit.models.PlaceInfo;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 
 public class MapsFragment extends Fragment implements
@@ -84,7 +88,7 @@ public class MapsFragment extends Fragment implements
                 .addApi(Places.PLACE_DETECTION_API)
                 .enableAutoManage(getActivity(), this)
                 .build();
-        googleApiClient.connect();
+     //   googleApiClient.connect();
     }
 
     private static final String TAG = "MapsFragment";
@@ -105,8 +109,9 @@ public class MapsFragment extends Fragment implements
     private GoogleApiClient googleApiClient;
     public LocationRequest locationRequest;
     public  Location lastLocation;
-    private Marker currentUserLocationMarker;
+    public Marker currentUserLocationMarker;
     private PlaceAutocompleteAdapter mPlaceAutocompleteAdapter;
+    private PlaceInfo mPlace;
 
 
 
@@ -127,6 +132,7 @@ public class MapsFragment extends Fragment implements
     private void init(){
         Log.d(TAG, "init: Initializing...");
 
+        mSearchText.setOnItemClickListener(mAutoCompleteClickListener);
         mPlaceAutocompleteAdapter = new PlaceAutocompleteAdapter (getActivity(), googleApiClient,
                 LAT_LNG_BOUNDS, null);
         mSearchText.setAdapter(mPlaceAutocompleteAdapter);
@@ -244,7 +250,7 @@ public class MapsFragment extends Fragment implements
 
     @Override
     public void onLocationChanged(Location location) {
-        Log.d(TAG, "onLocationChanged: FORE STARTERS");
+        Log.d(TAG, "onLocationChanged: FOR STARTERS");
         lastLocation = location;
         if(currentUserLocationMarker!=null){
             currentUserLocationMarker.remove();
@@ -283,10 +289,67 @@ public class MapsFragment extends Fragment implements
 
     }
 
+    @Override
+    public void onPause(){
+        Log.d(TAG, "onPause: Paused!");
+        super.onPause();
+        googleApiClient.stopAutoManage(getActivity());
+        googleApiClient.disconnect();
+    }
+
     //Hide Keyboard
     private void hideSoftKeyboard(){
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(mSearchText.getWindowToken(), 0);
     }
+
+    /*_________________________________GOOGLE PLACES API AUTOCOMPLETE SUGGESTIONS_________________________________________*/
+
+    private AdapterView.OnItemClickListener mAutoCompleteClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            hideSoftKeyboard();
+            final AutocompletePrediction item = mPlaceAutocompleteAdapter.getItem(i);
+            final String placeId = item.getPlaceId();
+
+            PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
+                    .getPlaceById(googleApiClient, placeId);
+            placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
+        }
+    };
+
+    private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback = new ResultCallback<PlaceBuffer>() {
+        @Override
+        public void onResult(@NonNull PlaceBuffer places) {
+            if(!places.getStatus().isSuccess()){
+                Log.d(TAG, "onResult: Place query did not complete successfully: "+places.getStatus().toString());
+                places.release();
+                return;
+            }
+            final Place place = places.get(0);
+
+            try{
+                mPlace = new PlaceInfo();
+                mPlace.setName(place.getName().toString());
+                mPlace.setAddress(place.getAddress().toString());
+              //  mPlace.setAttributions(place.getAttributions().toString());
+                mPlace.setId(place.getId());
+                mPlace.setLatlng(place.getLatLng());
+                mPlace.setRating(place.getRating());
+                mPlace.setPhoneNumber(place.getPhoneNumber().toString());
+                mPlace.setWebsiteUri(place.getWebsiteUri());
+                Log.d(TAG, "onResult: Place: "+mPlace.toString());
+
+            }catch (NullPointerException e){
+                Log.e(TAG, "onResult: NullPointerException: "+e.getMessage());
+            }
+            moveCamera(new LatLng(place.getViewport().getCenter().latitude,
+                    place.getViewport().getCenter().longitude),DEFAULT_ZOOM,mPlace.getName());
+            places.release();
+         }
+
+    };
 }
+
+
 
