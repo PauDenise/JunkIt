@@ -98,7 +98,7 @@ public class MapsFragment extends Fragment implements
 
     //widgets
     public AutoCompleteTextView mSearchText;
-    private ImageView mGps;
+    private ImageView mGps, mInfo;
 
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
@@ -112,8 +112,7 @@ public class MapsFragment extends Fragment implements
     public Marker currentUserLocationMarker;
     private PlaceAutocompleteAdapter mPlaceAutocompleteAdapter;
     private PlaceInfo mPlace;
-
-
+    private Marker mMarker;
 
 
     @Nullable
@@ -123,8 +122,8 @@ public class MapsFragment extends Fragment implements
         if(isServicesOK()){
             mSearchText = v.findViewById(R.id.input_search);
             mGps = v.findViewById(R.id.ic_gps);
+            mInfo = v.findViewById(R.id.place_info);
             getLocationPermission();
-
         }
         return v;
     }
@@ -162,6 +161,24 @@ public class MapsFragment extends Fragment implements
             }
         });
 
+        mInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: Clicked place info.");
+                try{
+                    if(mMarker.isInfoWindowShown()){
+                        mMarker.hideInfoWindow();
+                    }else{
+                        Log.d(TAG, "onClick: place info:"+ mPlace.toString());
+                        mMarker.showInfoWindow();
+                    }
+
+                }catch(NullPointerException e){
+                    Log.e(TAG, "onClick: NullPointerException: "+ e.getMessage());
+                }
+            }
+        });
+
     }
 
     private void geoLocate(){
@@ -177,6 +194,33 @@ public class MapsFragment extends Fragment implements
              moveCamera(new LatLng(address.getLatitude(),address.getLongitude()),DEFAULT_ZOOM,address.getAddressLine(0));
          }
         hideSoftKeyboard();
+    }
+
+    private void moveCamera(LatLng latLng, float zoom, PlaceInfo placeInfo){
+        Log.d(TAG, "moveCamera: Moving camera to: Lat:"+latLng.latitude+", Lng:"+latLng.longitude);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
+
+        mMap.clear();
+        mMap.setInfoWindowAdapter(new CustomWindowInfoAdapter(getContext()));
+
+        if(placeInfo!=null){
+            try{
+                String snippet = "Address: "+placeInfo.getAddress() + "\n"+
+                "Phone Number: "+placeInfo.getPhoneNumber() + "\n"+
+                "Website: "+placeInfo.getWebsiteUri() + "\n"+
+                "Rating: "+placeInfo.getRating() + "\n";
+
+                MarkerOptions options = new MarkerOptions()
+                        .position(latLng)
+                        .title(placeInfo.getName())
+                        .snippet(snippet);
+                mMarker = mMap.addMarker(options);
+            }catch(NullPointerException e){
+                Log.e(TAG, "moveCamera: NullPointerException: "+e.getMessage());
+            }
+        }else{
+            mMap.addMarker(new MarkerOptions().position(latLng));
+        }
     }
 
     private void moveCamera(LatLng latLng, float zoom, String title){
@@ -222,7 +266,6 @@ public class MapsFragment extends Fragment implements
         requestPermissions(permissions, LOCATION_PERMISSION_REQUEST_CODE);
     }
 
-
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         Log.d(TAG, "onRequestPermissionsResult: Called.");
         mLocationPermissionsGranted = false;
@@ -245,8 +288,6 @@ public class MapsFragment extends Fragment implements
 
         }
     }
-
-
 
     @Override
     public void onLocationChanged(Location location) {
@@ -344,7 +385,7 @@ public class MapsFragment extends Fragment implements
                 Log.e(TAG, "onResult: NullPointerException: "+e.getMessage());
             }
             moveCamera(new LatLng(place.getViewport().getCenter().latitude,
-                    place.getViewport().getCenter().longitude),DEFAULT_ZOOM,mPlace.getName());
+                    place.getViewport().getCenter().longitude),DEFAULT_ZOOM,mPlace);
             places.release();
          }
 
