@@ -22,25 +22,75 @@
 
         <ImageView
             android:id="@+id/ic_magnify"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:src="@drawable/ic_magnify"/>
+            android:src="@drawable/ic_location_on_black_24dp"
+            />
 
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/input_search"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_toRightOf="@+id/ic_magnify"
+            android:layout_marginLeft="3dp"
             android:layout_centerVertical="true"
             android:textSize="15sp"
             android:textColor="@color/black"
             android:background="@null"
             android:hint="Enter Junkshop Name"
-            android:imeOptions="actionSearch"/>
+            android:imeOptions="actionSearch"
+            />
+        
+        <ImageButton
+            android:id="@+id/search_button"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:onClick="onClick"
+            android:src="@drawable/ic_magnify"
+            />
 
     </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:id="@+id/junkshops_nearby"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:onClick="onClick"
+            android:src="@drawable/ic_delete_black_24dp"
+            />
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/ic_gps"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/relLayout1"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_gps"/>
+    <ImageView
+        android:id="@+id/place_info"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/relLayout1"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_info"/>
 
 
 </RelativeLayout>

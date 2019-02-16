@@ -17,12 +17,12 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAiZxTncAd5dtbe-aBqHZDVdy3jHcdDlz8"/>
+            android:value="AIzaSyA4mTMkPwvuqTOjjmwEXuBlASVGh_zgjfk"/>
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".BaseActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -31,7 +31,7 @@
         </activity>
         <activity android:name=".SignUp" />
         <activity android:name=".LoginActivity" />
-        <activity android:name=".BaseActivity"/>
+        <activity android:name=".MainActivity"/>
 
 
 
