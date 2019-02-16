@@ -1,15 +1,218 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scroll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorLightGreen">
-    
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Home Fragment"
-        android:textSize="35sp"
-        android:layout_centerInParent="true" />
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/background"
+    android:alpha="0.9">
+
+
+    <!--<TextView-->
+      <!--android:layout_width="150dp"-->
+      <!--android:layout_height="70dp"-->
+      <!--android:text="overview"-->
+      <!--android:layout_marginTop="30dp"-->
+      <!--android:textColor="#000"-->
+      <!--android:fontFamily="@font/stentiga"-->
+      <!--android:gravity="center"-->
+      <!--android:textSize="20sp"-->
+      <!--android:layout_centerHorizontal="true"-->
+      <!--android:background="@drawable/panel"/>-->
+
+    <!--<android.support.v7.widget.CardView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--app:cardCornerRadius="10dp"-->
+        <!--app:cardBackgroundColor="#e1e7ef"-->
+        <!--android:layout_marginLeft="40dp"-->
+        <!--android:layout_marginTop="100dp"-->
+        <!--tools:layout_editor_absoluteX="28dp"-->
+        <!--tools:layout_editor_absoluteY="120dp">-->
+
+        <!--<TextView-->
+            <!--android:layout_width="400dp"-->
+            <!--android:layout_height="190dp"-->
+            <!--android:layout_marginTop="15dp"-->
+            <!--android:textAlignment="center"-->
+            <!--android:text="This application lets users find junk shops near-->
+            <!--you"/>-->
+
+    <!--</android.support.v7.widget.CardView>-->
+
+    <!--<TextView-->
+        <!--android:layout_width="150dp"-->
+        <!--android:layout_height="70dp"-->
+        <!--android:text="VISION"-->
+        <!--android:layout_marginTop="330dp"-->
+        <!--android:textColor="#000"-->
+        <!--android:fontFamily="@font/stentiga"-->
+        <!--android:gravity="center"-->
+        <!--android:textSize="20sp"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:background="@drawable/panel"/>-->
+
+
+     <!--<android.support.v7.widget.CardView-->
+         <!--android:layout_width="wrap_content"-->
+         <!--android:layout_height="120dp"-->
+         <!--android:layout_centerHorizontal="true"-->
+         <!--app:cardCornerRadius="10dp"-->
+         <!--app:cardBackgroundColor="#e1e7ef"-->
+         <!--android:layout_marginLeft="40dp"-->
+         <!--android:layout_marginTop="395dp"-->
+         <!--tools:layout_editor_absoluteX="28dp"-->
+         <!--tools:layout_editor_absoluteY="120dp">-->
+
+         <!--<TextView-->
+             <!--android:layout_width="400dp"-->
+             <!--android:layout_height="190dp"-->
+             <!--android:layout_marginTop="30dp"-->
+             <!--android:text="WELCOME TO JUNK IT!"/>-->
+
+     <!--</android.support.v7.widget.CardView>-->
+
+    <!--<TextView-->
+        <!--android:layout_width="200dp"-->
+        <!--android:layout_height="70dp"-->
+        <!--android:text="CORE VALUES"-->
+        <!--android:layout_marginTop="520dp"-->
+        <!--android:textColor="#000"-->
+        <!--android:fontFamily="@font/stentiga"-->
+        <!--android:gravity="center"-->
+        <!--android:textSize="20sp"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:background="@drawable/panel"/>-->
+
+
+    <!--<android.support.v7.widget.CardView-->
+        <!--android:layout_width="150dp"-->
+        <!--android:layout_height="100dp"-->
+        <!--app:cardCornerRadius="10dp"-->
+        <!--app:cardBackgroundColor="#e1e7ef"-->
+        <!--android:layout_marginLeft="20dp"-->
+        <!--android:layout_marginTop="590dp"-->
+        <!--tools:layout_editor_absoluteX="28dp"-->
+        <!--tools:layout_editor_absoluteY="120dp">-->
+
+        <!--<TextView-->
+            <!--android:layout_width="400dp"-->
+            <!--android:layout_height="190dp"-->
+            <!--android:layout_marginTop="70dp"-->
+            <!--android:text="easy access"-->
+            <!--android:paddingLeft="20dp"/>-->
+
+    <!--</android.support.v7.widget.CardView>-->
+
+    <!--<android.support.v7.widget.CardView-->
+        <!--android:layout_width="160dp"-->
+        <!--android:layout_height="100dp"-->
+        <!--app:cardCornerRadius="10dp"-->
+        <!--app:cardBackgroundColor="#e1e7ef"-->
+        <!--android:layout_marginLeft="180dp"-->
+        <!--android:layout_marginTop="590dp"-->
+        <!--tools:layout_editor_absoluteX="28dp"-->
+        <!--tools:layout_editor_absoluteY="120dp">-->
+
+        <!--<TextView-->
+            <!--android:layout_width="400dp"-->
+            <!--android:layout_height="190dp"-->
+            <!--android:layout_marginTop="70dp"-->
+            <!--android:text="goal-oriented "-->
+            <!--android:paddingLeft="40dp"/>-->
+
+    <!--</android.support.v7.widget.CardView>-->
+
+    <!--<android.support.v7.widget.CardView-->
+        <!--android:layout_width="150dp"-->
+        <!--android:layout_height="100dp"-->
+        <!--app:cardCornerRadius="10dp"-->
+        <!--app:cardBackgroundColor="#e1e7ef"-->
+        <!--android:layout_marginLeft="20dp"-->
+        <!--android:layout_marginTop="700dp"-->
+        <!--tools:layout_editor_absoluteX="28dp"-->
+        <!--tools:layout_editor_absoluteY="120dp">-->
+
+        <!--<TextView-->
+            <!--android:layout_width="400dp"-->
+            <!--android:layout_height="190dp"-->
+            <!--android:layout_marginTop="70dp"-->
+            <!--android:text="environment friendly"-->
+            <!--android:paddingLeft="20dp"/>-->
+
+    <!--</android.support.v7.widget.CardView>-->
+
+    <!--<android.support.v7.widget.CardView-->
+        <!--android:layout_width="160dp"-->
+        <!--android:layout_height="100dp"-->
+        <!--app:cardCornerRadius="10dp"-->
+        <!--app:cardBackgroundColor="#e1e7ef"-->
+        <!--android:layout_marginLeft="180dp"-->
+        <!--android:layout_marginTop="700dp"-->
+        <!--tools:layout_editor_absoluteX="28dp"-->
+        <!--tools:layout_editor_absoluteY="120dp">-->
+
+        <!--<TextView-->
+            <!--android:layout_width="400dp"-->
+            <!--android:layout_height="190dp"-->
+            <!--android:layout_marginTop="70dp"-->
+            <!--android:text="customer support "-->
+            <!--android:paddingLeft="25dp"/>-->
+
+    <!--</android.support.v7.widget.CardView>-->
+
+    <!--<TextView-->
+        <!--android:layout_width="200dp"-->
+        <!--android:layout_height="70dp"-->
+        <!--android:text="SUSTAINABILITY"-->
+        <!--android:layout_marginTop="820dp"-->
+        <!--android:textColor="#000"-->
+        <!--android:fontFamily="@font/stentiga"-->
+        <!--android:gravity="center"-->
+        <!--android:textSize="20sp"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:background="@drawable/panel"/>-->
+
+
+    <!--<android.support.v7.widget.CardView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="170dp"-->
+        <!--app:cardCornerRadius="10dp"-->
+        <!--app:cardBackgroundColor="#e1e7ef"-->
+        <!--android:layout_marginLeft="40dp"-->
+        <!--android:layout_marginTop="885dp"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--tools:layout_editor_absoluteX="28dp"-->
+        <!--tools:layout_editor_absoluteY="120dp">-->
+
+        <!--<TextView-->
+            <!--android:layout_width="400dp"-->
+            <!--android:layout_height="190dp"-->
+            <!--android:layout_marginTop="70dp"-->
+            <!--android:text="mdg 7"-->
+            <!--android:paddingLeft="40dp"/>-->
+
+    <!--</android.support.v7.widget.CardView>-->
+
+
+
+
+    <ListView
+        android:id = "@+id/listRss"
+        android:layout_marginTop="70dp"
+        android:layout_width="match_parent"
+        android:layout_height="1300dp"
+        />
 
 
 </RelativeLayout>
+</ScrollView>
+
+
+

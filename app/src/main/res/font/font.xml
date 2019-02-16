@@ -25,4 +25,20 @@
         android:font="@font/stentiga"
         />
 
+
+    <font
+        android:fontStyle="normal"
+        android:font="@font/cabin"
+        />
+
+    <font
+        android:fontStyle="normal"
+        android:font="@font/catamaran"
+        />
+
+    <font
+        android:fontStyle="normal"
+        android:font="@font/poppins"
+        />
+
 </font-family>
