@@ -41,4 +41,25 @@
         android:font="@font/poppins"
         />
 
+    <font
+        android:fontStyle="normal"
+        android:font="@font/bebas"
+        />
+
+    <font
+        android:fontStyle="normal"
+        android:font="@font/raleway"
+        />
+
+    <font
+        android:fontStyle="normal"
+        android:font="@font/bellysans"
+        />
+
+    <font
+        android:fontStyle="normal"
+        android:font="@font/ralewaybold"
+        />
+
+
 </font-family>

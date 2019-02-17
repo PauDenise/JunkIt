@@ -37,6 +37,8 @@ dependencies {
    //noinspection GradleCompatible
    implementation 'com.android.support:cardview-v7:23.+'
     implementation "com.google.android.gms:play-services-location:15.0.1"
+
+
 }
 
 apply plugin: 'com.google.gms.google-services'

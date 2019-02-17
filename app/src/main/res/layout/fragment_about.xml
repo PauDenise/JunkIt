@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scroll"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/constraint_layout"
+    >
+
+    <!--<android.support.v7.widget.CardView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content">-->
+
+        <ImageView
+            android:id="@+id/header"
+            android:layout_width="wrap_content"
+            android:layout_height="220dp"
+            android:background="@drawable/coverphoto"/>
+
+    <ImageView
+        android:id="@+id/aboutus"
+        android:layout_width="wrap_content"
+        android:layout_height="270dp"
+        android:background="@drawable/grayback"
+        app:layout_constraintTop_toBottomOf="@+id/header" />
+
+    <ImageView
+        android:id="@+id/vision"
+        android:layout_width="wrap_content"
+        android:layout_height="270dp"
+        android:background="@drawable/creamback"
+        app:layout_constraintTop_toBottomOf="@+id/aboutus" />
+
+    <ImageView
+        android:id="@+id/mission"
+        android:layout_width="wrap_content"
+        android:layout_height="270dp"
+        android:background="@drawable/grayback"
+        app:layout_constraintTop_toBottomOf="@+id/vision" />
+
+
+    <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="ABOUT"
+        android:textStyle="bold"
+    android:fontFamily="@font/cabin"
+    android:textSize="23sp"
+    android:textColor="@color/black"
+    android:layout_marginLeft="150dp"
+    android:layout_marginTop="10sp"
+        app:layout_constraintTop_toBottomOf="@+id/header"
+        app:layout_constraintLeft_toLeftOf="@+id/header" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Read about the latest
+news and technlogies
+about our environment"
+        android:gravity="center"
+        android:fontFamily="@font/poppins"
+        android:textStyle="bold"
+        android:textSize="10sp"
+        android:textColor="@color/black"
+        android:layout_marginLeft="11dp"
+        android:layout_marginTop="200sp"
+        app:layout_constraintTop_toBottomOf="@+id/header"
+        app:layout_constraintLeft_toLeftOf="@+id/header" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Locate junk shops
+near you"
+        android:gravity="center"
+        android:fontFamily="@font/poppins"
+        android:textStyle="bold"
+        android:textSize="10sp"
+        android:textColor="@color/black"
+        android:layout_marginLeft="149dp"
+        android:layout_marginTop="200sp"
+        app:layout_constraintTop_toBottomOf="@+id/header"
+        app:layout_constraintLeft_toLeftOf="@+id/header" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send your inquiries
+and feedback"
+        android:gravity="center"
+        android:fontFamily="@font/poppins"
+        android:textStyle="bold"
+        android:textSize="10sp"
+        android:textColor="@color/black"
+        android:layout_marginLeft="268dp"
+        android:layout_marginTop="200sp"
+        app:layout_constraintTop_toBottomOf="@+id/header"
+        app:layout_constraintLeft_toLeftOf="@+id/header" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="VISION"
+        android:gravity="center"
+        android:fontFamily="@font/cabin"
+        android:textStyle="bold"
+        android:textSize="23sp"
+        android:textColor="@color/black"
+        android:layout_marginLeft="158dp"
+        android:layout_marginTop="10sp"
+        app:layout_constraintTop_toBottomOf="@+id/aboutus"
+        app:layout_constraintLeft_toLeftOf="@+id/aboutus" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="MISSION"
+        android:gravity="center"
+        android:fontFamily="@font/cabin"
+        android:textStyle="bold"
+        android:textSize="23sp"
+        android:textColor="@color/black"
+        android:layout_marginLeft="150dp"
+        android:layout_marginTop="10sp"
+        app:layout_constraintTop_toBottomOf="@+id/vision"
+        app:layout_constraintLeft_toLeftOf="@+id/vision" />
+
+
+
+
+    <LinearLayout
+        android:layout_width="400dp"
+        android:layout_height="270dp"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="490dp">
+
+
+
+        <android.support.v7.widget.CardView
+            android:layout_width="110dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="55dp"
+            android:layout_marginLeft="143dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="8dp"
+            app:cardBackgroundColor="#9c7dd8"
+            >
+
+            <ImageView
+                android:layout_width="75dp"
+                android:layout_height="65dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:background="@drawable/thumbsup"/>
+
+
+
+
+        </android.support.v7.widget.CardView>
+
+
+
+
+
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="400dp"
+        android:layout_height="270dp"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="759dp">
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="400dp"
+        android:layout_height="270dp"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="220dp">
+
+
+        <android.support.v7.widget.CardView
+            android:layout_width="110dp"
+            android:layout_height="120dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="55dp"
+            app:cardBackgroundColor="#f4b2cf"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="8dp">
+
+            <ImageView
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/newsicon" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="95dp"
+                android:fontFamily="@font/raleway"
+                android:text="news reader"
+                android:textColor="@color/black" />
+
+
+        </android.support.v7.widget.CardView>
+
+
+        <android.support.v7.widget.CardView
+            android:layout_width="110dp"
+            android:layout_height="120dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="55dp"
+            app:cardBackgroundColor="#d3f4b2"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="8dp">
+
+            <ImageView
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/recycle" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="84dp"
+                android:fontFamily="@font/raleway"
+                android:text="junk shop"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="29dp"
+                android:layout_marginTop="99dp"
+                android:fontFamily="@font/raleway"
+                android:text="locator"
+                android:textColor="@color/black" />
+
+
+        </android.support.v7.widget.CardView>
+
+
+        <android.support.v7.widget.CardView
+            android:layout_width="110dp"
+            android:layout_height="120dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="55dp"
+            app:cardBackgroundColor="#b2e9f4"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="8dp">
+
+            <ImageView
+                android:layout_width="110dp"
+                android:layout_height="80dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/chaticon" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="26dp"
+                android:layout_marginTop="95dp"
+                android:fontFamily="@font/raleway"
+                android:text="inquiries"
+                android:textColor="@color/black" />
+
+
+        </android.support.v7.widget.CardView>
+
+
+    </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!--</android.support.v7.widget.CardView>-->
+
+</android.support.constraint.ConstraintLayout>
+
+</ScrollView>

@@ -15,5 +15,14 @@
         android:title="Chat" />
 
 
+    <item
+        android:id="@+id/nav_about"
+        android:icon="@drawable/ic_info"
+        android:title="About" />
+
+
+
+
+
 
 </menu>

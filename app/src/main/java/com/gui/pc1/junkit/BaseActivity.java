@@ -41,6 +41,9 @@ public class BaseActivity extends AppCompatActivity {
                         case R.id.nav_chat:
                             selectedFragment = new ChatFragment();
                             break;
+                        case R.id.nav_about:
+                            selectedFragment = new AboutFragment();
+                            break;
                     }
 
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
