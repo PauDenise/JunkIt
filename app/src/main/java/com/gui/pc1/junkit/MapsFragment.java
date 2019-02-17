@@ -21,6 +21,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
@@ -35,10 +37,13 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.AutocompletePrediction;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceBuffer;
+import com.google.android.gms.location.places.PlaceTypes;
 import com.google.android.gms.location.places.Places;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -94,15 +99,17 @@ public class MapsFragment extends Fragment implements
     private static final String TAG = "MapsFragment";
     private static final int ERROR_DIALOG_REQUEST = 9001;
     private static final float DEFAULT_ZOOM = 15f;
-    private static final LatLngBounds LAT_LNG_BOUNDS = new LatLngBounds(new LatLng(-40,-168),new LatLng(71,136));
+    private static final LatLngBounds LAT_LNG_BOUNDS = new LatLngBounds(new LatLng(5.58100332277,117.17427453),new LatLng(18.5052273625,126.537423944));
 
     //widgets
     public AutoCompleteTextView mSearchText;
-    private ImageView mGps, mInfo;
+    private ImageView mGps, mInfo, mNearby;
 
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
+    private double latitude, longitude;
+    private int ProximityRadius = 10000;
 
     private Boolean mLocationPermissionsGranted = false;
     private GoogleMap mMap;
@@ -113,6 +120,7 @@ public class MapsFragment extends Fragment implements
     private PlaceAutocompleteAdapter mPlaceAutocompleteAdapter;
     private PlaceInfo mPlace;
     private Marker mMarker;
+    private WebView webView;
 
 
     @Nullable
@@ -123,6 +131,8 @@ public class MapsFragment extends Fragment implements
             mSearchText = v.findViewById(R.id.input_search);
             mGps = v.findViewById(R.id.ic_gps);
             mInfo = v.findViewById(R.id.place_info);
+            mNearby = v.findViewById(R.id.junkshops_nearby);
+            webView = v.findViewById(R.id.webView);
             getLocationPermission();
         }
         return v;
@@ -132,9 +142,15 @@ public class MapsFragment extends Fragment implements
         Log.d(TAG, "init: Initializing...");
 
         mSearchText.setOnItemClickListener(mAutoCompleteClickListener);
+
+        AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
+                .setTypeFilter(Place.TYPE_COUNTRY).setCountry("PH")
+                .build();
         mPlaceAutocompleteAdapter = new PlaceAutocompleteAdapter (getActivity(), googleApiClient,
-                LAT_LNG_BOUNDS, null);
+                LAT_LNG_BOUNDS,typeFilter);
+
         mSearchText.setAdapter(mPlaceAutocompleteAdapter);
+
 
         mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -179,11 +195,57 @@ public class MapsFragment extends Fragment implements
             }
         });
 
+        mNearby.setOnClickListener(new View.OnClickListener() {
+
+
+            Object transferData[] = new Object[2];
+            GetNearbyPlaces getNearbyPlaces = new GetNearbyPlaces();
+            @Override
+            public void onClick(View v) {
+              /*  mMap.clear();
+                String url = getUrl(latitude, longitude, "junkshop");
+                transferData[0] = mMap;
+                transferData[1] = url;
+
+                getNearbyPlaces.execute(transferData);
+                Toast.makeText(getContext(),"Searching for Nearby Junkshops...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),"Showing Nearby Junkshops...", Toast.LENGTH_SHORT).show();*/
+
+               if(webView.getVisibility()!=View.VISIBLE) {
+                   webView.setVisibility(View.VISIBLE);
+                   webView.getSettings().setJavaScriptEnabled(true);
+                   webView.setWebViewClient(new WebViewClient());
+                   webView.loadUrl("https://www.google.com/maps/d/u/4/edit?mid=1h2Ins-XGOAqiIFyi9XlRDTqrGUgj5idc&ll=14.549798521405435%2C121.02055079999991&z=11");
+               }
+               else{
+                   webView.setVisibility(View.INVISIBLE);
+               }
+
+
+            }
+        });
+
+    }
+
+    private String getUrl(double latitude,double longitude,String junkshop){
+            StringBuilder googleURL = new StringBuilder("https://maps.googleapis.com/maps/api/place/findplacefromtext/json?");
+            //googleURL.append("location"+latitude+","+longitude);
+            //googleURL.append("&radius="+ProximityRadius);
+            googleURL.append("&input=junkshop");
+            googleURL.append("&inputtype=textquery");
+            googleURL.append("&fields=photos,formatted_address,name,rating,opening_hours,geometry");
+            //googleURL.append("&sensor=true");
+            googleURL.append("&key="+"AIzaSyA2ps9LsUZtYuFVm7y-V2uY5ciGrPwNbL8");
+
+        Log.d("MapsFragment", "url = "+googleURL.toString());
+            
+            return googleURL.toString();
+
     }
 
     private void geoLocate(){
         Log.d(TAG, "geoLocate: Geolocating...");
-        String searchString = mSearchText.getText().toString();
+        String searchString = mSearchText.getText().toString()+"junkshop";
         Geocoder geocoder = new Geocoder(this.getActivity());
         List <Address> list= new ArrayList<>();
             try{list=geocoder.getFromLocationName(searchString,1);}
@@ -292,6 +354,10 @@ public class MapsFragment extends Fragment implements
     @Override
     public void onLocationChanged(Location location) {
         Log.d(TAG, "onLocationChanged: FOR STARTERS");
+
+        latitude=location.getLatitude();
+        longitude=location.getLongitude();
+        
         lastLocation = location;
         if(currentUserLocationMarker!=null){
             currentUserLocationMarker.remove();
