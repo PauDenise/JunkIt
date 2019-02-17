@@ -36,6 +36,8 @@ public class HomeFragment extends Fragment {
     ListView listRss;
     ArrayList<String> titles;
     ArrayList<String> links;
+    ArrayList<String> pubDates;
+    ArrayList<String> descriptions;
 
     @Nullable
     @Override
@@ -46,6 +48,8 @@ public class HomeFragment extends Fragment {
         listRss = (ListView) view.findViewById(R.id.listRss);
         titles = new ArrayList<String>();
         links = new ArrayList<String>();
+        pubDates = new ArrayList<String>();
+        descriptions = new ArrayList<String>();
 
         listRss.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -89,7 +93,7 @@ public class HomeFragment extends Fragment {
             progressDialog.setMessage("Loading News Feed... Please Wait...");
             progressDialog.show();
         }
-//
+        //
         @Override
         protected Exception doInBackground(Integer... integers) {
 
@@ -121,6 +125,22 @@ public class HomeFragment extends Fragment {
                             if (insideItem)
                             {
                                 titles.add(xpp.nextText());
+                            }
+                        }
+
+                        else if (xpp.getName().equalsIgnoreCase("description"))
+                        {
+                            if (insideItem)
+                            {
+                                descriptions.add(xpp.nextText());
+                            }
+                        }
+
+                        else if (xpp.getName().equalsIgnoreCase("pubDate"))
+                        {
+                            if (insideItem)
+                            {
+                                pubDates.add(xpp.nextText());
                             }
                         }
 
@@ -171,6 +191,6 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    }
+}
 
 
