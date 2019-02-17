@@ -1,5 +1,6 @@
 package com.gui.pc1.junkit;
 
+import android.support.v7.app.ActionBar;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -44,6 +45,9 @@ public class BaseActivity extends AppCompatActivity {
                             break;
                         case R.id.nav_about:
                             selectedFragment = new AboutFragment();
+                            break;
+                        case R.id.nav_profile:
+                            selectedFragment = new ProfileFragment();
                             break;
                     }
 
