@@ -45,13 +45,27 @@
         app:cardCornerRadius="15dp"
         app:cardBackgroundColor="#e1e7ef">
 
+        <EditText
+            android:id="@+id/EditTextUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:textSize="23sp"
+            android:hint="Username"
+            android:fontFamily="@font/alegreya"
+            android:textColorHint="#000"
+            android:textColor="#000"
+            android:inputType="textEmailAddress" />
+
 
 
         <EditText
             android:id="@+id/EditTextEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="120dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:textSize="23sp"
@@ -67,7 +81,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="160dp"
+            android:layout_marginTop="220dp"
             android:textSize="23sp"
             android:textColorHint="#000"
             android:textColor="#000"
