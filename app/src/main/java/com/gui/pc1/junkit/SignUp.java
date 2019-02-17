@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +22,7 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 public class SignUp extends AppCompatActivity implements View.OnClickListener {
 
     private Button buttonRegister;
+    private EditText editTextUsername;
     private EditText editTextEmail;
     private EditText editTextPassword;
     private TextView TextViewLogin;
@@ -37,6 +39,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
 
         progressBar = findViewById(R.id.progressbar);
         buttonRegister = findViewById(R.id.buttonRegister);
+        editTextUsername = findViewById(R.id.EditTextUsername);
         editTextEmail = findViewById(R.id.EditTextEmail);
         editTextPassword = findViewById(R.id.EditTextPassword);
         TextViewLogin = findViewById(R.id.textViewLogin);
@@ -49,13 +52,23 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
 
-        if(TextUtils.isEmpty(email)){
+        if(email.isEmpty()){
             //email is empty
+            editTextEmail.setError("Email is required");
+            editTextEmail.requestFocus();
             Toast.makeText(this, "Please Enter Email.", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(TextUtils.isEmpty(password)){
+
+        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            editTextEmail.setError("Please enter a valid email.");
+            editTextEmail.requestFocus();
+            return;
+        }
+        if(password.isEmpty()){
             //password is empty
+            editTextPassword.setError("Password is required");
+            editTextPassword.requestFocus();
             Toast.makeText(this, "Please Enter Password.", Toast.LENGTH_SHORT).show();
             return;
         }
