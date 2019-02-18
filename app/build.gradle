@@ -6,6 +6,7 @@ android {
         applicationId "com.gui.pc1.junkit"
         minSdkVersion 21
         targetSdkVersion 27
+        vectorDrawables.useSupportLibrary = true
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -14,8 +15,26 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField 'String', "ClientAccessToken", '"5e3daa2001d444dcb72b824e2f326834"'
+            resValue 'string', "ClientAccessToken", '"5e3daa2001d444dcb72b824e2f326834"'
+        }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField 'String', "ClientAccessToken", '"5e3daa2001d444dcb72b824e2f326834"'
+            resValue 'string', "ClientAccessToken", '"5e3daa2001d444dcb72b824e2f326834"'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+// Java V2
+        packagingOptions {
+            exclude 'META-INF/LICENSE.txt'
+            exclude 'META-INF/DEPENDENCIES'
+            exclude 'META-INF/INDEX.LIST'
+        }
 }
 
 dependencies {
@@ -38,6 +57,20 @@ dependencies {
    implementation 'com.android.support:cardview-v7:23.+'
     implementation "com.google.android.gms:play-services-location:15.0.1"
 
+    //BottomNavigationViewEx
+    implementation 'com.github.ittianyu:BottomNavigationViewEx:1.2.4'
+
+
+    // Dialogflow SDK dependencies
+    implementation 'ai.api:sdk:2.0.7@aar'
+    implementation 'ai.api:libai:1.6.12'
+
+    // Java V2
+    implementation 'com.google.cloud:google-cloud-dialogflow:0.67.0-alpha'
+    // for Remote Procedure Call to avoid "No functional channel service provider found" error while creating SessionsClient
+    implementation 'io.grpc:grpc-okhttp:1.15.1'
+
+    implementation 'io.kommunicate:kommunicate:1.8.1'
 
 }
 
