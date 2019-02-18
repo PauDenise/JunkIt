@@ -1,7 +1,9 @@
 package com.gui.pc1.junkit;
 
 import android.content.Intent;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -18,6 +20,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.gui.pc1.junkit.models.ProfileActivity;
 
 public class SignUp extends AppCompatActivity implements View.OnClickListener {
 
@@ -48,6 +51,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
         TextViewLogin.setOnClickListener(this);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
     private void registerUser(){
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
@@ -88,8 +92,9 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
                             //user is successfully registered and logged in.
                             //start profile activity
                             Toast.makeText(SignUp.this,"Registered Successfully", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(getApplicationContext(),BaseActivity.class);
+                            Intent intent = new Intent(getApplicationContext(),ProfileActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            finish();
                             startActivity(intent);
                         }else {
                             if(task.getException() instanceof FirebaseAuthUserCollisionException){
@@ -105,6 +110,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -112,7 +118,9 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
                 registerUser();
                 break;
             case R.id.textViewLogin:
+                finish();
                 startActivity(new Intent(this, LoginActivity.class));
+                break;
         }
 
     }
