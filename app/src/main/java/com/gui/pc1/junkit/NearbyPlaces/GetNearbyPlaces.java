@@ -1,4 +1,4 @@
-package com.gui.pc1.junkit;
+package com.gui.pc1.junkit.NearbyPlaces;
 
 import android.os.AsyncTask;
 

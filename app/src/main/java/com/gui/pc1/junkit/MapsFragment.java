@@ -41,9 +41,7 @@ import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.AutocompletePrediction;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceBuffer;
-import com.google.android.gms.location.places.PlaceTypes;
 import com.google.android.gms.location.places.Places;
-import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -53,6 +51,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.gui.pc1.junkit.NearbyPlaces.GetNearbyPlaces;
 import com.gui.pc1.junkit.models.PlaceInfo;
 
 import java.io.IOException;
@@ -109,7 +108,6 @@ public class MapsFragment extends Fragment implements
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
     private double latitude, longitude;
-    private int ProximityRadius = 10000;
 
     private Boolean mLocationPermissionsGranted = false;
     private GoogleMap mMap;
@@ -120,7 +118,6 @@ public class MapsFragment extends Fragment implements
     private PlaceAutocompleteAdapter mPlaceAutocompleteAdapter;
     private PlaceInfo mPlace;
     private Marker mMarker;
-    private WebView webView;
 
 
     @Nullable
@@ -132,7 +129,6 @@ public class MapsFragment extends Fragment implements
             mGps = v.findViewById(R.id.ic_gps);
             mInfo = v.findViewById(R.id.place_info);
             mNearby = v.findViewById(R.id.junkshops_nearby);
-            webView = v.findViewById(R.id.webView);
             getLocationPermission();
         }
         return v;
@@ -158,7 +154,7 @@ public class MapsFragment extends Fragment implements
 
                 if(actionId ==EditorInfo.IME_ACTION_SEARCH || actionId ==EditorInfo.IME_ACTION_DONE
                         || keyEvent.getAction()==keyEvent.ACTION_DOWN || keyEvent.getAction()==keyEvent.KEYCODE_ENTER)
-                {
+                {mInfo.setVisibility(View.VISIBLE);
                     //execute our method from searching.
                     geoLocate();
                 }
@@ -177,50 +173,35 @@ public class MapsFragment extends Fragment implements
             }
         });
 
-        mInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: Clicked place info.");
-                try{
-                    if(mMarker.isInfoWindowShown()){
-                        mMarker.hideInfoWindow();
-                    }else{
-                        Log.d(TAG, "onClick: place info:"+ mPlace.toString());
-                        mMarker.showInfoWindow();
-                    }
-
-                }catch(NullPointerException e){
-                    Log.e(TAG, "onClick: NullPointerException: "+ e.getMessage());
+        mInfo.setOnClickListener(v -> {
+            Log.d(TAG, "onClick: Clicked place info.");
+            try{
+                if(mMarker.isInfoWindowShown()){
+                    mMarker.hideInfoWindow();
+                }else{
+                    Log.d(TAG, "onClick: place info:"+ mPlace.toString());
+                    mMarker.showInfoWindow();
                 }
+
+            }catch(NullPointerException e){
+                Log.e(TAG, "onClick: NullPointerException: "+ e.getMessage());
             }
         });
 
         mNearby.setOnClickListener(new View.OnClickListener() {
-
-
             Object transferData[] = new Object[2];
             GetNearbyPlaces getNearbyPlaces = new GetNearbyPlaces();
             @Override
             public void onClick(View v) {
-              /*  mMap.clear();
+               mMap.clear();
+               mInfo.setVisibility(View.INVISIBLE);
                 String url = getUrl(latitude, longitude, "junkshop");
                 transferData[0] = mMap;
                 transferData[1] = url;
 
                 getNearbyPlaces.execute(transferData);
                 Toast.makeText(getContext(),"Searching for Nearby Junkshops...", Toast.LENGTH_SHORT).show();
-                Toast.makeText(getContext(),"Showing Nearby Junkshops...", Toast.LENGTH_SHORT).show();*/
-
-               if(webView.getVisibility()!=View.VISIBLE) {
-                   webView.setVisibility(View.VISIBLE);
-                   webView.getSettings().setJavaScriptEnabled(true);
-                   webView.setWebViewClient(new WebViewClient());
-                   webView.loadUrl("https://www.google.com/maps/d/u/4/edit?mid=1h2Ins-XGOAqiIFyi9XlRDTqrGUgj5idc&ll=14.549798521405435%2C121.02055079999991&z=11");
-               }
-               else{
-                   webView.setVisibility(View.INVISIBLE);
-               }
-
+                Toast.makeText(getContext(),"Showing Nearby Junkshops...", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -228,12 +209,10 @@ public class MapsFragment extends Fragment implements
     }
 
     private String getUrl(double latitude,double longitude,String junkshop){
-            StringBuilder googleURL = new StringBuilder("https://maps.googleapis.com/maps/api/place/findplacefromtext/json?");
-            //googleURL.append("location"+latitude+","+longitude);
-            //googleURL.append("&radius="+ProximityRadius);
-            googleURL.append("&input=junkshop");
-            googleURL.append("&inputtype=textquery");
-            googleURL.append("&fields=photos,formatted_address,name,rating,opening_hours,geometry");
+            StringBuilder googleURL = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
+            googleURL.append("location="+latitude+","+longitude);
+            googleURL.append("&radius=500");
+            googleURL.append("&name=junkshop");
             //googleURL.append("&sensor=true");
             googleURL.append("&key="+"AIzaSyA2ps9LsUZtYuFVm7y-V2uY5ciGrPwNbL8");
 
