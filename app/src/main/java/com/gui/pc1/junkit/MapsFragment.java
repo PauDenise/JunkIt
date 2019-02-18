@@ -1,16 +1,19 @@
 package com.gui.pc1.junkit;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -134,6 +137,8 @@ public class MapsFragment extends Fragment implements
         return v;
     }
 
+    @TargetApi(Build.VERSION_CODES.CUPCAKE)
+    @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
     private void init(){
         Log.d(TAG, "init: Initializing...");
 
@@ -173,18 +178,21 @@ public class MapsFragment extends Fragment implements
             }
         });
 
-        mInfo.setOnClickListener(v -> {
-            Log.d(TAG, "onClick: Clicked place info.");
-            try{
-                if(mMarker.isInfoWindowShown()){
-                    mMarker.hideInfoWindow();
-                }else{
-                    Log.d(TAG, "onClick: place info:"+ mPlace.toString());
-                    mMarker.showInfoWindow();
-                }
+        mInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: Clicked place info.");
+                try {
+                    if (mMarker.isInfoWindowShown()) {
+                        mMarker.hideInfoWindow();
+                    } else {
+                        Log.d(TAG, "onClick: place info:" + mPlace.toString());
+                        mMarker.showInfoWindow();
+                    }
 
-            }catch(NullPointerException e){
-                Log.e(TAG, "onClick: NullPointerException: "+ e.getMessage());
+                } catch (NullPointerException e) {
+                    Log.e(TAG, "onClick: NullPointerException: " + e.getMessage());
+                }
             }
         });
 

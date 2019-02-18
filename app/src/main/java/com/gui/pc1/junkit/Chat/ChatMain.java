@@ -66,25 +66,33 @@ public class ChatMain extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
 
         final ScrollView scrollview = findViewById(R.id.chatScrollView);
-        scrollview.post(() -> scrollview.fullScroll(ScrollView.FOCUS_DOWN));
+        scrollview.post(new Runnable() {
+            @Override
+            public void run() {
+                scrollview.fullScroll(ScrollView.FOCUS_DOWN);
+            }
+        });
 
         chatLayout = findViewById(R.id.chatLayout);
-        ImageView sendBtn = findViewById(R.id.sendBtn);
+        final ImageView sendBtn = findViewById(R.id.sendBtn);
         sendBtn.setOnClickListener(this::sendMessage);
 
         queryEditText = findViewById(R.id.queryEditText);
-        queryEditText.setOnKeyListener((view, keyCode, event) -> {
-            if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                switch (keyCode) {
-                    case KeyEvent.KEYCODE_DPAD_CENTER:
-                    case KeyEvent.KEYCODE_ENTER:
-                        sendMessage(sendBtn);
-                        return true;
-                    default:
-                        break;
+        queryEditText.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                    switch (keyCode) {
+                        case KeyEvent.KEYCODE_DPAD_CENTER:
+                        case KeyEvent.KEYCODE_ENTER:
+                            ChatMain.this.sendMessage(sendBtn);
+                            return true;
+                        default:
+                            break;
+                    }
                 }
+                return false;
             }
-            return false;
         });
         // Android client
         initChatbot();
