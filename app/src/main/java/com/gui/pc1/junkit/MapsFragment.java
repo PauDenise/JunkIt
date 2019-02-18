@@ -154,7 +154,7 @@ public class MapsFragment extends Fragment implements
 
                 if(actionId ==EditorInfo.IME_ACTION_SEARCH || actionId ==EditorInfo.IME_ACTION_DONE
                         || keyEvent.getAction()==keyEvent.ACTION_DOWN || keyEvent.getAction()==keyEvent.KEYCODE_ENTER)
-                {
+                {mInfo.setVisibility(View.VISIBLE);
                     //execute our method from searching.
                     geoLocate();
                 }
@@ -189,13 +189,12 @@ public class MapsFragment extends Fragment implements
         });
 
         mNearby.setOnClickListener(new View.OnClickListener() {
-
-
             Object transferData[] = new Object[2];
             GetNearbyPlaces getNearbyPlaces = new GetNearbyPlaces();
             @Override
             public void onClick(View v) {
                mMap.clear();
+               mInfo.setVisibility(View.INVISIBLE);
                 String url = getUrl(latitude, longitude, "junkshop");
                 transferData[0] = mMap;
                 transferData[1] = url;

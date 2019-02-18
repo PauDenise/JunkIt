@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">JunkIt</string>
+
     <string name="google_maps_API_key">AIzaSyAiZxTncAd5dtbe-aBqHZDVdy3jHcdDlz8</string>
     <string name="google_places_API_key">AIzaSyCr8TQ2_I-1IyFhEdsDJq8pGjmo1Kxjf_c</string>
+
+    <string name="facebook_app_id">612161089206479</string>
+    <string name="fb_login_protocol_scheme">fb612161089206479</string>
+
 
 </resources>
