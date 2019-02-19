@@ -11,47 +11,66 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="700dp"
-    android:background="@color/pink">
+    android:background="#efedc2">
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="600dp"
-        android:text="Profile Fragment"
+        android:layout_height="60dp"
+        android:layout_marginLeft="45dp"
+        android:layout_marginTop="10dp"
+        android:text="My Profile"
+        android:textColor="@color/black"
+        android:fontFamily="@font/ralewaybold"
         android:textSize="35sp"
-        android:layout_centerInParent="true" />
+        android:textAlignment="center"
+        android:layout_centerHorizontal="true"
+        />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="170dp"
+        android:layout_height="170dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="96dp"
+        android:background="@drawable/vectorman"
+        android:scaleType="centerCrop" />
+
+    <TextView
+        android:id="@+id/usernameView"
+        android:layout_width="260dp"
+        android:layout_height="80dp"
+        android:layout_marginLeft="45dp"
+        android:layout_marginTop="160dp"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:fontFamily="@font/ralewaybold"
+        android:textColor="@color/black"
+        />
 
 
     <TextView
         android:layout_width="260dp"
         android:layout_height="80dp"
         android:layout_marginLeft="45dp"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="240dp"
         android:textSize="20sp"
         android:gravity="center"
         android:fontFamily="@font/ralewaybold"
         android:textColor="@color/black"
-        android:text="Give us your feedback"/>
+        android:text="Give us feedback about our app"/>
 
 
     <android.support.v7.widget.CardView
 
         android:layout_width="298dp"
-        android:layout_height="320dp"
+        android:layout_height="325dp"
         android:layout_marginLeft="30dp"
-        android:layout_marginTop="285dp"
+        android:layout_marginTop="360dp"
+        app:cardElevation="16dp"
+        app:cardCornerRadius="12dp"
         >
 
-
-        <EditText
-            android:id="@+id/enterUsername"
-            android:layout_width="200dp"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:hint="Enter Username"
-            android:textSize="16sp"
-            android:fontFamily="@font/ralewaybold"
-            android:layout_height="wrap_content"
-            android:layout_margin="50dp"/>
 
         <EditText
             android:id="@+id/userFeedback"
@@ -62,31 +81,50 @@
             android:hint="Give us your feedback"
             android:layout_height="wrap_content"
             android:fontFamily="@font/ralewaybold"
-            android:layout_marginTop="150dp"
+            android:textColor="@color/black"
+            android:layout_marginTop="70dp"
             android:layout_marginLeft="50dp"/>
 
         <Button
             android:id="@+id/btnSend"
             android:onClick="myFancyMethod"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
+            android:background="@drawable/buttonshape"
+            android:fontFamily="@font/ralewaybold"
             android:text="SEND"
-            android:layout_marginTop="210dp"
-            android:layout_marginLeft="100dp"/>
+            android:textSize="17sp"
+            android:layout_marginTop="170dp"
+            android:layout_marginLeft="70dp"/>
 
         <Button
             android:id="@+id/btnDetails"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/ralewaybold"
             android:text="View Details"
+            android:textColor="@color/black"
+            android:textSize="17sp"
             android:enabled="false"
             android:onClick="myFancyMethod"
-            android:layout_marginTop="270dp"
-            android:layout_marginLeft="85dp"/>
+            android:background="@drawable/buttonshape"
+            android:layout_marginTop="250dp"
+            android:layout_marginLeft="70dp"/>
+
 
 
     </android.support.v7.widget.CardView>
 
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Logout"
+        android:enabled="true"
+        android:onClick="myFancyMethod"
+        android:layout_marginTop="690dp"
+        android:layout_marginLeft="85dp"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
 

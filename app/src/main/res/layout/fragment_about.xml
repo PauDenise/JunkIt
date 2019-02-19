@@ -203,7 +203,7 @@ near you"
                 android:layout_height="75dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/recycle" />
+                android:background="@drawable/recycle1" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -292,7 +292,7 @@ near you"
                     android:textSize="22sp"
                     android:fontFamily="@font/ralewaybold"
                     android:textStyle="bold"
-                    android:text="Our vision is to create a medium for people to know how to maintain environmental sustainability with propoer waste management." />
+                    android:text="Our vision is to create a medium for people to know how to maintain environmental sustainability with proper waste management." />
 
             </RelativeLayout>
 

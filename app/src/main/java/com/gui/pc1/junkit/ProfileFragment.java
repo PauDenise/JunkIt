@@ -1,6 +1,7 @@
 package com.gui.pc1.junkit;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -8,76 +9,83 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.facebook.login.LoginManager;
 import com.firebase.client.Firebase;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class ProfileFragment extends Fragment {
 
 
-    EditText enterUsername, userFeedback;
+    EditText userFeedback;
     Button send, details;
-    Firebase firebase;
+    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    TextView usernameView;
+    ImageView imageView;
+    Button logout;
+    final FirebaseUser user = firebaseAuth.getCurrentUser();
 
 
     @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view= inflater.inflate(R.layout.fragment_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        enterUsername = (EditText) view.findViewById(R.id.enterUsername);
-        userFeedback = (EditText) view.findViewById(R.id.userFeedback);
-        send =(Button) view.findViewById(R.id.btnSend);
-        details= (Button) view.findViewById(R.id.btnDetails);
+        userFeedback = view.findViewById(R.id.userFeedback);
+        send = view.findViewById(R.id.btnSend);
+        details = view.findViewById(R.id.btnDetails);
         Firebase.setAndroidContext(this.getActivity());
 
-        String UniqueID =
-        Settings.Secure.getString(getActivity().getApplicationContext().getContentResolver(),
-         Settings.Secure.ANDROID_ID);
+        usernameView = view.findViewById(R.id.usernameView);
+        imageView = view.findViewById(R.id.imageView);
+        logout = view.findViewById(R.id.btnLogout);
 
-        firebase = new Firebase("https://junkitapp.firebaseio.com");
+
+        DatabaseReference databaseFeedback = FirebaseDatabase.getInstance().getReference();
+        loadUserInformation();
+
 
         send.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
             @Override
             public void onClick(View view) {
-                details.setEnabled(true);
-                final String username = enterUsername.getText().toString();
+
+                final String username = user.getDisplayName();
                 final String feedback = userFeedback.getText().toString();
 
 
-                 Firebase child_name = firebase.child("Username");
-                child_name.setValue(username);
-                if(username.isEmpty()){
-                    enterUsername.setError("Please Enter your Username");
-                    send.setEnabled(false);
-                }
 
-                else{
-                    enterUsername.setError(null);
-                    send.setEnabled(true);
-                }
-
-                Firebase child_message = firebase.child("Feedback");
-                child_message.setValue(feedback);
                 if(feedback.isEmpty()){
                     userFeedback.setError("Please Enter your Feedback");
                     send.setEnabled(false);
                 }
 
                 else{
+                    String id = databaseFeedback.push().getKey();
+                    databaseFeedback.child("Feedbacks").child(username).child(id).child("UserFeedback").setValue(feedback);
+                    details.setEnabled(true);
                     userFeedback.setError(null);
                     send.setEnabled(true);
+
+                    Toast.makeText(getActivity(), "Feedback Sent!", Toast.LENGTH_SHORT).show();
+
                 }
 
-                Toast.makeText(getActivity(), "Feedback Sent!", Toast.LENGTH_SHORT).show();
 
                 details.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -91,10 +99,37 @@ public class ProfileFragment extends Fragment {
 
             }
 
+        });
 
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoginManager.getInstance().logOut();
+                firebaseAuth.signOut();
+                startActivity(new Intent(getContext(), MainActivity.class));
+            }
         });
 
 
         return view;
     }
+
+    private void loadUserInformation() {
+
+        if (user != null) {
+
+            if (user.getPhotoUrl() != null) {
+                Log.d("forphoto", "loadUserInformation: photourl: "+ user.getPhotoUrl().toString());
+                RequestOptions options = new RequestOptions().centerCrop().placeholder(R.mipmap.ic_launcher_round);
+                Glide.with(this)
+                        .load(user.getPhotoUrl().toString())
+                        .into(imageView);
+            }
+            if (user.getDisplayName() != null) {
+                usernameView.setText("Hello, "+user.getDisplayName());
+            }
+
+        }
+    }
+
 }

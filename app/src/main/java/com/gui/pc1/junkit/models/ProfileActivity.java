@@ -93,7 +93,6 @@ public class ProfileActivity extends AppCompatActivity {
             startActivity(new Intent(this, MainActivity.class));
         }
     }
-
     private void loadUserInformation() {
         final FirebaseUser user = firebaseAuth.getCurrentUser();
 
