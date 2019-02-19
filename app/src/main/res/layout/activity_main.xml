@@ -11,10 +11,6 @@
         android:layout_height="250dp"
         android:background="@drawable/mainphoto"/>
 
-
-
-
-
     <android.support.v7.widget.CardView
         android:layout_width="295dp"
         android:layout_height="240dp"
