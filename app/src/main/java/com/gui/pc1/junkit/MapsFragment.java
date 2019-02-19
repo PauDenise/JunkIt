@@ -198,7 +198,7 @@ public class MapsFragment extends Fragment implements
                 }
             }
         });
-
+        mMap.setInfoWindowAdapter(new CustomWindowInfoAdapter(getContext()));
         mNearby.setOnClickListener(new View.OnClickListener() {
             Object transferData[] = new Object[2];
             @Override
@@ -212,7 +212,6 @@ public class MapsFragment extends Fragment implements
                 new GetNearbyPlaces().execute(transferData);
             }
 
-
         });
 
     }
@@ -221,6 +220,7 @@ public class MapsFragment extends Fragment implements
 
         private String googleplaceData, url;
         private GoogleMap mMap;
+
 
         @Override
         protected String doInBackground(Object... objects) {

@@ -53,7 +53,7 @@ public class ProfileFragment extends Fragment {
                 final String feedback = userFeedback.getText().toString();
 
 
-                Firebase child_name = firebase.child("Username");
+                 Firebase child_name = firebase.child("Username");
                 child_name.setValue(username);
                 if(username.isEmpty()){
                     enterUsername.setError("Please Enter your Username");
@@ -93,9 +93,6 @@ public class ProfileFragment extends Fragment {
 
 
         });
-
-
-
 
 
         return view;
