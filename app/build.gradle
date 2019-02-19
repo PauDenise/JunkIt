@@ -30,11 +30,11 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 // Java V2
-        packagingOptions {
-            exclude 'META-INF/LICENSE.txt'
-            exclude 'META-INF/DEPENDENCIES'
-            exclude 'META-INF/INDEX.LIST'
-        }
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/INDEX.LIST'
+    }
 }
 
 dependencies {
@@ -53,13 +53,12 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:15.0.1'
     implementation 'com.google.android.gms:play-services-places:15.0.1'
 
-   //noinspection GradleCompatible
-   implementation 'com.android.support:cardview-v7:23.+'
+    //noinspection GradleCompatible
+    implementation 'com.android.support:cardview-v7:23.+'
     implementation "com.google.android.gms:play-services-location:15.0.1"
 
     //BottomNavigationViewEx
     implementation 'com.github.ittianyu:BottomNavigationViewEx:1.2.4'
-
 
     // Dialogflow SDK dependencies
     implementation 'ai.api:sdk:2.0.7@aar'

@@ -21,7 +21,7 @@
         app:menu="@menu/bottom_navigation"
         app:itemIconTint="@color/black"
         app:itemTextColor="@color/black"
-        android:backgroundTint="@color/dark_cyan"
+        android:backgroundTint="#557039"
         android:background="@color/colorLightPink"/>
 
 

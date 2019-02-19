@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/pink">
 
     <TextView
@@ -10,6 +11,22 @@
         android:text="Profile Fragment"
         android:textSize="35sp"
         android:layout_centerInParent="true" />
+
+    <Button
+        android:id="@+id/buttonLogout"
+        android:layout_width="280dp"
+        android:layout_height="45dp"
+        android:gravity="center"
+        android:background="@drawable/buttonshape"
+        android:textColor="@color/black"
+        android:textSize="23sp"
+        android:layout_marginTop="400dp"
+        android:layout_marginLeft="40dp"
+        android:fontFamily="@font/quicksand"
+        android:textStyle="bold"
+        android:text="Log Out"
+        tools:layout_editor_absoluteX="127dp"
+        tools:layout_editor_absoluteY="437dp"/>
 
 
 </RelativeLayout>
