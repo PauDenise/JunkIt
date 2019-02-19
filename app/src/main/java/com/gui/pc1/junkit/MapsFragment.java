@@ -92,7 +92,7 @@ public class MapsFragment extends Fragment implements
                 .addApi(Places.PLACE_DETECTION_API)
                 .enableAutoManage(getActivity(), this)
                 .build();
-     //   googleApiClient.connect();
+       googleApiClient.connect();
     }
 
     private static final String TAG = "MapsFragment";
@@ -154,7 +154,7 @@ public class MapsFragment extends Fragment implements
 
                 if(actionId ==EditorInfo.IME_ACTION_SEARCH || actionId ==EditorInfo.IME_ACTION_DONE
                         || keyEvent.getAction()==keyEvent.ACTION_DOWN || keyEvent.getAction()==keyEvent.KEYCODE_ENTER)
-                {mInfo.setVisibility(View.VISIBLE);
+                {mInfo.setVisibility(View.INVISIBLE);
                     //execute our method from searching.
                     geoLocate();
                 }
