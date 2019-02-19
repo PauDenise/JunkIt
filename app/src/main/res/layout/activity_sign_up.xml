@@ -42,8 +42,8 @@
         android:layout_marginTop="60dp"
         tools:layout_editor_absoluteX="28dp"
         tools:layout_editor_absoluteY="120dp"
-        app:cardCornerRadius="15dp"
-        app:cardBackgroundColor="#e1e7ef">
+        app:cardCornerRadius="8dp"
+        app:cardBackgroundColor="#fff">
 
         <EditText
             android:id="@+id/EditTextUsername"
