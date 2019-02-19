@@ -33,6 +33,8 @@ public class GetNearbyPlaces extends AsyncTask<Object,String, String> {
         return googleplaceData;
     }
 
+
+
     @Override
     protected void onPostExecute(String s) {
         List<HashMap<String, String>> nearByPlacesList = null;

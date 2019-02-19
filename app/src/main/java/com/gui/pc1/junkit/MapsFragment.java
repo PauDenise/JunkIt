@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -24,8 +25,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
@@ -54,13 +53,15 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.gui.pc1.junkit.NearbyPlaces.DataParser;
+import com.gui.pc1.junkit.NearbyPlaces.DownloadUrl;
 import com.gui.pc1.junkit.NearbyPlaces.GetNearbyPlaces;
 import com.gui.pc1.junkit.models.PlaceInfo;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
 
 public class MapsFragment extends Fragment implements
         OnMapReadyCallback,
@@ -93,6 +94,7 @@ public class MapsFragment extends Fragment implements
                 .addApi(LocationServices.API)
                 .addApi(Places.GEO_DATA_API)
                 .addApi(Places.PLACE_DETECTION_API)
+                .addApi(Places.PLACE_DETECTION_API)
                 .enableAutoManage(getActivity(), this)
                 .build();
        googleApiClient.connect();
@@ -121,6 +123,7 @@ public class MapsFragment extends Fragment implements
     private PlaceAutocompleteAdapter mPlaceAutocompleteAdapter;
     private PlaceInfo mPlace;
     private Marker mMarker;
+
 
 
     @Nullable
@@ -198,7 +201,6 @@ public class MapsFragment extends Fragment implements
 
         mNearby.setOnClickListener(new View.OnClickListener() {
             Object transferData[] = new Object[2];
-            GetNearbyPlaces getNearbyPlaces = new GetNearbyPlaces();
             @Override
             public void onClick(View v) {
                mMap.clear();
@@ -207,19 +209,86 @@ public class MapsFragment extends Fragment implements
                 transferData[0] = mMap;
                 transferData[1] = url;
 
-                getNearbyPlaces.execute(transferData);
-                Toast.makeText(getContext(),"Searching for Nearby Junkshops...", Toast.LENGTH_SHORT).show();
-                Toast.makeText(getContext(),"Showing Nearby Junkshops...", Toast.LENGTH_SHORT).show();
-
+                new GetNearbyPlaces().execute(transferData);
             }
+
+
         });
 
     }
 
+    public class GetNearbyPlaces extends AsyncTask<Object,String, String> {
+
+        private String googleplaceData, url;
+        private GoogleMap mMap;
+
+        @Override
+        protected String doInBackground(Object... objects) {
+
+            mMap = (GoogleMap) objects[0];
+            url = (String) objects[1];
+
+            DownloadUrl downloadUrl = new DownloadUrl();
+            try {
+                googleplaceData = downloadUrl.ReadTheURL(url);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return googleplaceData;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            List<HashMap<String, String>> nearByPlacesList = null;
+            List<HashMap<String, String>> nearByPlacesListStorage= null;
+            DataParser dataParser = new DataParser();
+            nearByPlacesList = dataParser.parse(s);
+            Log.d(TAG, "onPostExecute: nearbyplacelist: "+nearByPlacesList.toString());
+            if(nearByPlacesList.toString()!="[]"){
+                nearByPlacesListStorage = nearByPlacesList;
+                Toast.makeText(getContext(),"Searching for Nearby Junkshops...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),"Showing Nearby Junkshops...", Toast.LENGTH_SHORT).show();
+                DisplayNearbyPlaces(nearByPlacesList);
+            }else{
+                Toast.makeText(getContext(), "You can't make map requests at the moment.", Toast.LENGTH_SHORT).show();
+            }
+
+        }
+
+        private void DisplayNearbyPlaces(List<HashMap<String, String>> nearByPlacesList) {
+
+            for(int i=0;i<nearByPlacesList.size();i++){
+                HashMap<String, String> googleNearbyPlace = nearByPlacesList.get(i);
+                String nameOfPlace = googleNearbyPlace.get("place_name");
+                String vicinity = googleNearbyPlace.get("vicinity");
+                double lat = Double.parseDouble(googleNearbyPlace.get("lat"));
+                double lng = Double.parseDouble(googleNearbyPlace.get("lng"));
+
+                String snippet = "Name: "+nameOfPlace + "\n"+
+                         "Address: "+vicinity+"\n";
+                        //"Phone Number: "+placeInfo.getPhoneNumber() + "\n"+
+                        //"Website: "+placeInfo.getWebsiteUri() + "\n"+
+                        //"Rating: "+placeInfo.getRating() + "\n";
+
+                LatLng latLng = new LatLng(lat,lng);
+                MarkerOptions options = new MarkerOptions()
+                        .position(latLng)
+                        .title(nameOfPlace + " : " + vicinity)
+                        .snippet(snippet)
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
+                mMap.addMarker(options);
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13f));
+            }
+
+        }
+    }
+
+
     private String getUrl(double latitude,double longitude,String junkshop){
             StringBuilder googleURL = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
             googleURL.append("location="+latitude+","+longitude);
-            googleURL.append("&radius=500");
+            googleURL.append("&radius=1000");
             googleURL.append("&name=junkshop");
             //googleURL.append("&sensor=true");
             googleURL.append("&key="+"AIzaSyA2ps9LsUZtYuFVm7y-V2uY5ciGrPwNbL8");
@@ -235,7 +304,7 @@ public class MapsFragment extends Fragment implements
         String searchString = mSearchText.getText().toString()+"junkshop";
         Geocoder geocoder = new Geocoder(this.getActivity());
         List <Address> list= new ArrayList<>();
-            try{list=geocoder.getFromLocationName(searchString,1);}
+            try{list=geocoder.getFromLocationName(searchString,9);}
             catch (IOException e){ Log.d(TAG, "geoLocate: IOException: "+e.getMessage());}
          if(list.size()>0){
                 Address address = list.get(0);

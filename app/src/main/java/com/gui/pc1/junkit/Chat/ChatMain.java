@@ -147,7 +147,7 @@ public class ChatMain extends AppCompatActivity {
         }
     }
 
-    public void callback(AIResponse aiResponse) {
+  /*  public void callback(AIResponse aiResponse) {
         if (aiResponse != null) {
             // process aiResponse here
             String botReply = aiResponse.getResult().getFulfillment().getSpeech();
@@ -165,11 +165,17 @@ public class ChatMain extends AppCompatActivity {
                     if(cont[x]=='>')
                     {
                         finalReply = finalReply + "\n";
+
+                        *//*if answer is 3
+                        int pesosPerKilo = 5
+                        total=pesosPerKilo*answer; --------based sa junk*//*
+
                     }
                     else
                     {
                         pass = String.valueOf(cont[x]);
                         finalReply = finalReply + pass;
+
                     }
                 }
             }
@@ -179,7 +185,7 @@ public class ChatMain extends AppCompatActivity {
             showTextView("There was some communication issue. Please Try again!", BOT);
         }
     }
-
+*/
     public void callbackV2(DetectIntentResponse response) {
         if (response != null) {
             // process aiResponse here

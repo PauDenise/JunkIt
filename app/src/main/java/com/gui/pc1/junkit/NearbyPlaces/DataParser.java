@@ -14,6 +14,7 @@ public class DataParser {
         HashMap<String, String> googlePlaceMap = new HashMap<>();
         String NameOfPlace= "-NA-";
         String vicinity= "-NA-";
+        String openingHours= "";
         String latitude= "";
         String longitude= "";
         String reference= "";
@@ -25,12 +26,16 @@ public class DataParser {
             if(!googlePlaceJSON.isNull("vicinity")){
                 vicinity = googlePlaceJSON.getString("vicinity");
             }
+            if(!googlePlaceJSON.isNull("opening_hours")){
+                openingHours = googlePlaceJSON.getString("opening_hours");
+            }
             latitude = googlePlaceJSON.getJSONObject("geometry").getJSONObject("location").getString("lat");
             longitude = googlePlaceJSON.getJSONObject("geometry").getJSONObject("location").getString("lng");
             reference = googlePlaceJSON.getString("reference");
 
             googlePlaceMap.put("place_name", NameOfPlace);
             googlePlaceMap.put("vicinity", vicinity);
+            googlePlaceMap.put("opening_hours", openingHours);
             googlePlaceMap.put("lat", latitude);
             googlePlaceMap.put("lng", longitude);
             googlePlaceMap.put("reference", reference);

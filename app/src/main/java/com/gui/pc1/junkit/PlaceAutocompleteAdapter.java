@@ -87,7 +87,6 @@ public class PlaceAutocompleteAdapter
                                     LatLngBounds bounds, AutocompleteFilter filter) {
         super(context, android.R.layout.simple_expandable_list_item_2, android.R.id.text1);
         mGoogleApiClient = googleApiClient;
-        Log.d(TAG, "PlaceAutocompleteAdapter: BOUNDS:"+bounds);
         mBounds = bounds;
         mPlaceFilter = filter;
 
