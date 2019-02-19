@@ -10,8 +10,6 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        multiDexEnabled true
-
     }
     buildTypes {
         release {
@@ -27,16 +25,17 @@ android {
             resValue 'string', "ClientAccessToken", '"5e3daa2001d444dcb72b824e2f326834"'
         }
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
+
 // Java V2
         packagingOptions {
             exclude 'META-INF/LICENSE.txt'
             exclude 'META-INF/DEPENDENCIES'
             exclude 'META-INF/INDEX.LIST'
         }
+    compileOptions {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+    }
 }
 
 dependencies {
@@ -53,22 +52,23 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
-
-
     implementation 'com.google.firebase:firebase-core:16.0.1'
     implementation 'com.google.firebase:firebase-auth:16.0.3'
     implementation 'com.firebase:firebase-client-android:2.5.2'
     implementation 'com.google.firebase:firebase-database:10.0.1'
+    implementation 'com.google.firebase:firebase-storage:16.0.1'
     implementation 'com.google.android.gms:play-services-maps:15.0.1'
     implementation 'com.google.android.gms:play-services-places:15.0.1'
 
-    //noinspection GradleCompatible
-    implementation 'com.google.android.gms:play-services-location:15.0.1'
+   //noinspection GradleCompatible
+   implementation 'com.android.support:cardview-v7:23.+'
+    implementation "com.google.android.gms:play-services-location:15.0.1"
 
+    implementation 'com.github.bumptech.glide:glide:4.3.1'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.3.1'
 
     //BottomNavigationViewEx
     implementation 'com.github.ittianyu:BottomNavigationViewEx:1.2.4'
-
 
     // Dialogflow SDK dependencies
     implementation 'ai.api:sdk:2.0.7@aar'

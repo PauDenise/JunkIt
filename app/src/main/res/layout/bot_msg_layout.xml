@@ -25,6 +25,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:padding="12dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/raleway"
+            android:textStyle="bold"
             android:text="abcdefgh"
             android:textSize="18sp" />
 

@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "552079004762-ndnabkjjejk40mj5q9poidhptsq1o59v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gui.pc1.junkit",
+            "certificate_hash": "5926e3af74a0693eb3152fb9e1378b5eb6b90d4f"
+          }
+        },
+        {
           "client_id": "552079004762-494452mbo8q5dgkk1tdqgpp0hsjqpmd5.apps.googleusercontent.com",
           "client_type": 3
         }
