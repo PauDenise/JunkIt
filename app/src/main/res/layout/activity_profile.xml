@@ -66,6 +66,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="11dp"
+        android:fontFamily="@font/raleway"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="223dp"
         android:hint="Enter Display Name" />
@@ -90,6 +91,10 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="140dp"
+        android:fontFamily="@font/raleway"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
         android:background="@color/aquamarine"
         android:paddingLeft="55dp"
         android:paddingRight="55dp"

@@ -191,24 +191,218 @@ public class ChatMain extends AppCompatActivity {
             // process aiResponse here
             String botReply = response.getQueryResult().getFulfillmentText();
             String finalReply = "",pass="";
+            String idcalc = "";
+            String idchar;
+            String calcnum="";
+            double result;
             char[] cont = botReply.toCharArray();
             Log.d(TAG, "V2 Bot Reply: " + botReply);
             if(botReply=="")
             {
-                finalReply = "Sorry I didn't get that. Kindly choose from the choices.";
+                finalReply = "Sorry I didn't get that. Kindly enter a valid code from the list.";
             }
             else
             {
-                for(int x=0;x<botReply.length();x++)
+                if(botReply.length()<8)
                 {
-                    if(cont[x]=='>')
+                    for(int x=0;x<botReply.length();x++)
                     {
-                        finalReply = finalReply + "\n";
+                        idchar = String.valueOf(cont[x]);
+                        if(x>2)
+                        {
+                            calcnum = calcnum + idchar;
+                        }
+                        else
+                        {
+                            idcalc = idcalc + idchar;
+                        }
                     }
-                    else
+                    idcalc.trim();
+                    calcnum.trim();
+                    Log.d(TAG, "ID: " + idcalc);
+                    int num = Integer.parseInt(calcnum);
+                    Log.d(TAG, "Result: " + num);
+                    switch (idcalc)
                     {
-                        pass = String.valueOf(cont[x]);
-                        finalReply = finalReply + pass;
+                        case "cbs":
+                        {
+                            result = num*100.00;
+                            finalReply = "Your income in selling your scrap will be P"+Double.toString(result)+"\n\nDo you want to ask more? (yes/no)";
+                            break;
+                        }
+                        case "wpp":
+                        {
+                            result = num*8.00;
+                            finalReply = "Your income in selling your scrap will be P"+Double.toString(result)+"\n\nDo you want to ask more? (yes/no)";
+                            break;
+                        }
+                        case "ode":
+                        {
+                            result = num*8.00;
+                            finalReply = "Your income in selling your scrap will be P"+Double.toString(result)+"\n\nDo you want to ask more? (yes/no)";
+                            break;
+                        }
+                        case "cap":
+                        {
+                            result = num*2.50;
+                            finalReply = "Your income in selling your scrap will be P"+Double.toString(result)+"\n\nDo you want to ask more? (yes/no)";
+                            break;
+                        }
+                        case "olp":
+                        {
+                            result = num*4.00;
+                            finalReply = "Your income in selling your scrap will be P"+Double.toString(result)+"\n\nDo you want to ask more? (yes/no)";
+                            break;
+                        }
+                        case "asp":
+                        {
+                            result = num*1.50;
+                            finalReply = "Your income in selling your scrap will be P"+Double.toString(result)+"\n\nDo you want to ask more? (yes/no)";
+                            break;
+                        }
+                        case "eng":
+                        {
+                            result = num*1.50;
+                            finalReply = "Your income in selling your scrap will be P"+Double.toString(result)+"\n\nDo you want to ask more? (yes/no)";
+                            break;
+                        }
+                        case "ccp":
+                        {
+                            result = num*16.00;
+                            finalReply = "Your income in selling your scrap will be P"+Double.toString(result)+"\n\nDo you want to ask more? (yes/no)";
+                            break;
+                        }
+                        case "usp":
+                        {
+                            result = num*12.00;
+                            finalReply = "Your income in selling your scrap will be P"+Double.toString(result)+"\n\nDo you want to ask more? (yes/no)";
+                            break;
+                        }
+                        case "fbp":
+                        {
+                            result = num*10.00;
+                            finalReply = "Your income in selling your scrap will be P"+Double.toString(result)+"\n\nDo you want to ask more? (yes/no)";
+                            break;
+                        }
+                        case "cop":
+                        {
+                            result = num*10.00;
+                            finalReply = "Your income in selling your scrap will be P"+Double.toString(result)+"\n\nDo you want to ask more? (yes/no)";
+                            break;
+                        }
+                        case "imp":
+                        {
+                            result = num*5.00;
+                            finalReply = "Your income in selling your scrap will be P"+Double.toString(result)+"\n\nDo you want to ask more? (yes/no)";
+                            break;
+                        }
+                        case "zpp":
+                        {
+                            result = num*0.20;
+                            finalReply = "Your income in selling your scrap will be P"+Double.toString(result)+"\n\nDo you want to ask more? (yes/no)";
+                            break;
+                        }
+                        case "acm":
+                        {
+                            result = num*50.00;
+                            finalReply = "Your income in selling your scrap will be P"+Double.toString(result)+"\n\nDo you want to ask more? (yes/no)";
+                            break;
+                        }
+                        case "cac":
+                        {
+                            result = num*300.00;
+                            finalReply = "Your income in selling your scrap will be P"+Double.toString(result)+"\n\nDo you want to ask more? (yes/no)";
+                            break;
+                        }
+                        case "cbc":
+                        {
+                            result = num*250.00;
+                            finalReply = "Your income in selling your scrap will be P"+Double.toString(result)+"\n\nDo you want to ask more? (yes/no)";
+                            break;
+                        }
+                        case "ccc":
+                        {
+                            result = num*150.00;
+                            finalReply = "Your income in selling your scrap will be P"+Double.toString(result)+"\n\nDo you want to ask more? (yes/no)";
+                            break;
+                        }
+                        case "irs":
+                        {
+                            result = num*9.00;
+                            finalReply = "Your income in selling your scrap will be P"+Double.toString(result)+"\n\nDo you want to ask more? (yes/no)";
+                            break;
+                        }
+                        case "sts":
+                        {
+                            result = num*60.00;
+                            finalReply = "Your income in selling your scrap will be P"+Double.toString(result)+"\n\nDo you want to ask more? (yes/no)";
+                            break;
+                        }
+                        case "gis":
+                        {
+                            result = num*7.00;
+                            finalReply = "Your income in selling your scrap will be P"+Double.toString(result)+"\n\nDo you want to ask more? (yes/no)";
+                            break;
+                        }
+                        case "tcm":
+                        {
+                            result = num*3.00;
+                            finalReply = "Your income in selling your scrap will be P"+Double.toString(result)+"\n\nDo you want to ask more? (yes/no)";
+                            break;
+                        }
+                        case "elg":
+                        {
+                            result = num*0.75;
+                            finalReply = "Your income in selling your scrap will be P"+Double.toString(result)+"\n\nDo you want to ask more? (yes/no)";
+                            break;
+                        }
+                        case "gig":
+                        {
+                            result = num*0.65;
+                            finalReply = "Your income in selling your scrap will be P"+Double.toString(result)+"\n\nDo you want to ask more? (yes/no)";
+                            break;
+                        }
+                        case "keg":
+                        {
+                            result = num*0.25;
+                            finalReply = "Your income in selling your scrap will be P"+Double.toString(result)+"\n\nDo you want to ask more? (yes/no)";
+                            break;
+                        }
+                        case "sog":
+                        {
+                            result = num*2.00;
+                            finalReply = "Your income in selling your scrap will be P"+Double.toString(result)+"\n\nDo you want to ask more? (yes/no)";
+                            break;
+                        }
+                        case "glg":
+                        {
+                            result = num*1.00;
+                            finalReply = "Your income in selling your scrap will be P"+Double.toString(result)+"\n\nDo you want to ask more? (yes/no)";
+                            break;
+                        }
+                        case "ije":
+                        {
+                            result = num*100.00;
+                            double result2 = num*300;
+                            finalReply = "Your income in selling your scrap will be P"+Double.toString(result)+" to "+Double.toString(result2)+"\n\nDo you want to ask more? (yes/no)";
+                            break;
+                        }
+                    }
+                    Log.d(TAG, "Final: " + finalReply);
+                }
+                else
+                {
+                    for(int x=0;x<botReply.length();x++)
+                    {
+                        if(cont[x]=='>')
+                        {
+                            finalReply = finalReply + "\n";
+                        }
+                        else
+                        {
+                            pass = String.valueOf(cont[x]);
+                            finalReply = finalReply + pass;
+                        }
                     }
                 }
             }

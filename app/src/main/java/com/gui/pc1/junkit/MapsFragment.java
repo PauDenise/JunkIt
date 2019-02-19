@@ -452,13 +452,13 @@ public class MapsFragment extends Fragment implements
 
     }
 
-    @Override
+    /*@Override
     public void onPause(){
         Log.d(TAG, "onPause: Paused!");
         super.onPause();
         googleApiClient.stopAutoManage(getActivity());
         googleApiClient.disconnect();
-    }
+    }*/
 
     //Hide Keyboard
     private void hideSoftKeyboard(){

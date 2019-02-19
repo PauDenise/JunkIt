@@ -66,7 +66,6 @@ dependencies {
     //BottomNavigationViewEx
     implementation 'com.github.ittianyu:BottomNavigationViewEx:1.2.4'
 
-
     // Dialogflow SDK dependencies
     implementation 'ai.api:sdk:2.0.7@aar'
     implementation 'ai.api:libai:1.6.12'
