@@ -16,45 +16,43 @@ import com.facebook.login.widget.LoginButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import com.gui.pc1.junkit.models.ProfileActivity;
+
 public class ProfileFragment extends Fragment {
 
-    private FirebaseAuth firebaseAuth;
+    Button logoutBtn;
+    Button profileBtn;
 
-
+    FirebaseAuth firebaseAuth;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
-        firebaseAuth = FirebaseAuth.getInstance();
-        Button logoutButton = v.findViewById(R.id.buttonLogout);
+        logoutBtn = v.findViewById(R.id.buttonLogout);
+        profileBtn = v.findViewById(R.id.buttonEditProfile);
 
-        logoutButton.setOnClickListener(new View.OnClickListener() {
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        profileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(),ProfileActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
+        logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 firebaseAuth.signOut();
                 LoginManager.getInstance().logOut();
-
-                // Check if user is signed in (non-null) and update UI accordingly.
-                FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-                if(currentUser==null){
-                    updateUI();
-                }
+                Intent intent = new Intent(getContext(),MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             }
         });
 
         return v;
-
-
-
-
-    }
-
-    private void updateUI() {
-        Toast.makeText(getContext(), "You're logged out.", Toast.LENGTH_SHORT).show();
-
-        Intent accountIntent = new Intent(getContext(), MainActivity.class);
-        startActivity(accountIntent);
-
     }
 }

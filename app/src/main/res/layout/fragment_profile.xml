@@ -13,20 +13,37 @@
         android:layout_centerInParent="true" />
 
     <Button
-        android:id="@+id/buttonLogout"
-        android:layout_width="280dp"
+        android:id="@+id/buttonEditProfile"
+        android:layout_width="130dp"
         android:layout_height="45dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="155dp"
+        android:background="@drawable/plate"
+        android:fontFamily="@font/stentiga"
         android:gravity="center"
-        android:background="@drawable/buttonshape"
-        android:textColor="@color/black"
-        android:textSize="23sp"
-        android:layout_marginTop="400dp"
-        android:layout_marginLeft="40dp"
-        android:fontFamily="@font/quicksand"
+        android:text="Edit Profile"
+        android:textColor="#000"
+        android:textSize="18sp"
         android:textStyle="bold"
-        android:text="Log Out"
         tools:layout_editor_absoluteX="127dp"
-        tools:layout_editor_absoluteY="437dp"/>
+        tools:layout_editor_absoluteY="437dp" />
 
+    <Button
+        android:id="@+id/buttonLogout"
+        android:layout_width="130dp"
+        android:layout_height="45dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="92dp"
+        android:background="@drawable/plate"
+        android:fontFamily="@font/stentiga"
+        android:gravity="center"
+        android:text="Log out"
+        android:textColor="#000"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="127dp"
+        tools:layout_editor_absoluteY="437dp" />
 
 </RelativeLayout>

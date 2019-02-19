@@ -60,10 +60,6 @@ public class BaseActivity extends AppCompatActivity {
         return true;
     }
 
-
-
-
-
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             item -> {
                 Fragment selectedFragment = null;
